@@ -1,0 +1,107 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>login</title>
+    <link rel="stylesheet" href="../../static/css/main/public/public.css" th:href="@{../static/css/main/public/public.css}">
+</head>
+<style>
+    /**{*/
+    /*    margin: 0;*/
+    /*    padding: 0;*/
+    /*    box-sizing: border-box;*/
+    /*}*/
+    /*a{*/
+    /*    text-decoration: none;*/
+    /*}*/
+
+    /*ul, li, dt, dd {*/
+    /*    list-style: none;*/
+    /*}*/
+
+    main{
+        width: 900px;
+        max-height: 1200px;
+        margin: 0 auto;
+    }
+    .login_box{
+        text-align: center;
+        padding: 100px 150px 150px 150px;
+        margin: 20px auto;
+        background-color: #f5f5f5;
+        box-shadow: 0 0 10px #6e6e6e;
+    }
+    .login_logo_box{
+        margin: 20px 0;
+    }
+    .inputBox{
+        margin: 10px 0;
+        position: relative;
+    }
+    .inputBox > input{
+        display: inline-block;
+        height: 50px;
+        width: 70%;
+        border-radius: 12px;
+    }
+    .inputBox > label{
+        display: inline-block;
+        width: 25%;
+    }
+    .label{
+        left: 12.5%;
+        font-size: 10px;
+        color: #b7b7b7;
+        display: block;
+        position: relative;
+        margin-bottom: 5px;
+        text-align: left;
+    }
+    .btn_box{
+        display: flex;
+        justify-content: space-evenly;
+        margin-top: 20px;
+    }
+    .btn_box button{
+        margin-top: 20px;
+        width: 30%;
+        height: 40px;
+        border-radius: 10px;
+        cursor: pointer;
+    }
+</style>
+<body>
+    <main>
+        <form class="login_box" method="post" action="/user/login">
+            <div class="login_logo_box">
+                <h1>웹 이름 or 로고</h1>
+            </div>
+
+            <div class="inputBox">
+                <span class="label">
+                        아이디
+                </span>
+                <label for="id">
+                    <i>이미지 예정</i>
+                </label>
+                <input type="text" name="username" id="id" >
+            </div>
+
+            <div class="inputBox">
+                <span class="label">
+                    비밀번호
+                </span>
+
+                <label for="pw">
+                    <i>이미지 예정</i>
+                </label>
+                <input type="text" name="password" id="pw" >
+            </div>
+            <div class="btn_box">
+                <button type="button">회원가입</button>
+                <button>로그인</button>
+                <button type="button">아이디 / 비번찾기</button>
+            </div>
+        </form>
+    </main>
+</body>
+</html>

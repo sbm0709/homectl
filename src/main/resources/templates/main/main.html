@@ -1,0 +1,160 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../../static/css/main/public/header.css"  th:href="@{/css/main/public/header.css}">
+    <link rel="stylesheet" href="../../static/css/main/public/public.css"  th:href="@{/css/main/public/public.css}">
+    <script src="https://kit.fontawesome.com/3e73eec07c.js" crossorigin="anonymous"></script>
+</head>
+
+<style>
+    main{
+        width: 1440px;
+        margin: 0 auto;
+        background-color: #e5e5e5;
+        border-radius: 10px;
+        box-shadow: 0 0 10px #b7b7b7;
+        padding: 100px 200px;
+    }
+    .machine_box{
+        box-shadow: 0 0 4px black;
+        border-radius: 10px;
+        padding: 5px 15px;
+        margin: 15px 0;
+    }
+    .machine{
+        display: flex;
+        width: 30%;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .mini_machine_box{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .switch{
+        position: relative;
+        width: 80px;
+        height: 30px;
+        border-radius: 20px;
+        border: 1px solid black;
+        cursor: pointer;
+        background-color: #fff;
+        transition: 0.2s;
+    }
+    .switch:hover{
+        background-color: #e7e7e7;
+    }
+    .on_off_Btn{
+        position: absolute;
+        left: 5px;
+        width: 20px;
+        height: 20px;
+        border-radius: 15px;
+        background-color: black;
+        top: 4px;
+        transition: 0.2s;
+    }
+    .switch[active]{
+        background-color: cornflowerblue;
+        border: cornflowerblue 1px solid;
+    }
+    .switch[active]:hover{
+        background-color: #5883d0;
+    }
+    .switch[active] > .on_off_Btn{
+        left: 53px;
+        background-color: #e7e7e7;
+    }
+    .casementBtn{
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+    .machine_option_box{
+        width: 100%;
+        padding: 0 20px;
+        margin: 15px 0;
+        display: none;
+    }
+    .machine_box[active] > .machine_option_box{
+        display: block;
+    }
+    .machine_title_box{
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space:nowrap;
+        max-width: 70%;
+    }
+
+
+
+</style>
+<body>
+    <th:block th:replace="~{main/public/header_frame :: main_header_fragment}"></th:block>
+    <main>
+        <section>
+            여기는 설정창?
+        </section>
+        <section>
+            <ul>
+                <li class="machine_box" th:each="machine : ${machines}">
+                    <div class="mini_machine_box">
+                        <div class="machine">
+                            <div class="machine_title_box" >
+                                <span class="machine_title" th:text="${machine.getUuid()}">
+                                    머신 1111111111111111111111
+                                </span>
+                            </div>
+                            <div class="machine_switch_box">
+                                <input hidden="hidden" name="state" type="number" class="machine_state" th:value="${machine.getState()}">
+                                <button class="switch" onclick="switchMove(this)">
+                                    <span class="on_off_Btn"></span>
+                                </button>
+                            </div>
+                        </div>
+                        <div>
+                            <button class="casementBtn" onclick="casement(this)">
+                                <i class="fa-solid fa-circle-chevron-down fa-2x"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="machine_option_box">
+                        <div class="UUID_box">
+                            <span>
+                                UUID :
+                            </span>
+                            <span th:text="${machine.getUuid()}"></span>
+                        </div>
+                        머신 옵션 박스 요건 hidden 했다가 나오게
+                    </div>
+                </li>
+            </ul>
+        </section>
+    </main>
+</body>
+</html>
+
+<script>
+
+    function switchMove(btn){
+        btn.toggleAttribute('active');
+    }
+
+    function casement(btn){
+        btn.closest(".machine_box").toggleAttribute('active');
+    }
+    function stateInit(){
+        const stateInputs = document.querySelectorAll(".machine_state");
+        for (const input of stateInputs) {
+            console.log(input.value);
+            if(input.value !== "0"){
+                input.closest(".machine_switch_box").querySelector("button").click();
+            }
+        }
+    }
+    stateInit();
+
+</script>
