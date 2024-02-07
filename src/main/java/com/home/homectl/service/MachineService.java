@@ -20,4 +20,12 @@ public class MachineService {
     public List<MachineDTO> get_all_machine(UserDTO userDTO){
         return machineMapper.get_all_machine(userDTO);
     }
+
+    public void delete_machine_by_uuid(MachineDTO machineDTO){
+        machineMapper.delete_machine_by_uuid(machineDTO);
+    }
+
+    public void machine_state_update(MachineDTO machineDTO){
+        machineMapper.machine_state_update(machineDTO);
+    }
 }

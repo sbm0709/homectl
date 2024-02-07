@@ -3,9 +3,21 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.home.homectl.mapper.MachineMapper">
-        <select id="get_all_machine" resultType="MachineDTO">
-            SELECT * FROM machine
-            WHERE user_id = #{id}
-        </select>
+
+    <select id="get_all_machine" resultType="MachineDTO">
+        SELECT * FROM machine
+        WHERE user_id = #{id}
+    </select>
+
+
+    <delete id="delete_machine_by_uuid" >
+        delete * FROM machine
+        WHERE uuid = #{uuid}
+    </delete>
+
+    <update id="machine_state_update">
+        UPDATE machine SET `state` = #{state}
+        WHERE `uuid` = #{uuid};
+    </update>
 
 </mapper>

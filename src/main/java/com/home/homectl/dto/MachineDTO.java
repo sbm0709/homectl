@@ -10,6 +10,8 @@ import lombok.*;
 @AllArgsConstructor
 public class MachineDTO {
     private String uuid;
+    private String name;
     private int state;
+    private String type;
     private String user_id;
 }

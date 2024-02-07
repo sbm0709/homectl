@@ -33,8 +33,5 @@ public class MainController {
         return "main/main";
     }
 
-    @GetMapping("/user/login")
-    public String get_login(){
-        return "user/login";
-    }
+
 }

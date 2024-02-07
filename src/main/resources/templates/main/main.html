@@ -11,6 +11,7 @@
 <style>
     main{
         width: 1440px;
+        min-height: 1000px;
         margin: 0 auto;
         background-color: #e5e5e5;
         border-radius: 10px;
@@ -74,6 +75,7 @@
         cursor: pointer;
     }
     .machine_option_box{
+        position: relative;
         width: 100%;
         padding: 0 20px;
         margin: 15px 0;
@@ -88,6 +90,18 @@
         white-space:nowrap;
         max-width: 70%;
     }
+    .delete_box{
+        position: absolute;
+        right: 5px;
+        top: 5px;
+        cursor: pointer;
+    }
+    .main_header{
+        display: flex;
+        padding: 5px 20px;
+        justify-content: space-between;
+        align-items: center;
+    }
 
 
 
@@ -95,8 +109,17 @@
 <body>
     <th:block th:replace="~{main/public/header_frame :: main_header_fragment}"></th:block>
     <main>
-        <section>
-            여기는 설정창?
+        <section class="main_header">
+            <div class="count_box">
+                <span th:text="|현재 등록된 Machine : ${machines.size()}개|"></span>
+            </div>
+            <div class="select_box">
+                <select name="order_select" id="order">
+                    <option>
+                        기본정렬
+                    </option>
+                </select>
+            </div>
         </section>
         <section>
             <ul>
@@ -104,12 +127,12 @@
                     <div class="mini_machine_box">
                         <div class="machine">
                             <div class="machine_title_box" >
-                                <span class="machine_title" th:text="${machine.getUuid()}">
-                                    머신 1111111111111111111111
+                                <span class="machine_title" th:text="${machine.getName()}">
+                                    머신 1
                                 </span>
                             </div>
                             <div class="machine_switch_box">
-                                <input hidden="hidden" name="state" type="number" class="machine_state" th:value="${machine.getState()}">
+                                <input hidden="hidden" name="state" class="machine_state" th:value="${machine.getState()}">
                                 <button class="switch" onclick="switchMove(this)">
                                     <span class="on_off_Btn"></span>
                                 </button>
@@ -126,9 +149,12 @@
                             <span>
                                 UUID :
                             </span>
-                            <span th:text="${machine.getUuid()}"></span>
+                            <span th:text="${machine.getUuid()}" class="UUID"></span>
                         </div>
-                        머신 옵션 박스 요건 hidden 했다가 나오게
+                        <div class="type_box">
+                            <span th:text="|TYPE : ${machine.getType()}|"></span>
+                        </div>
+                        <div class="delete_box" onclick="machineDelete(this)"><i class="fa-solid fa-xmark fa-2x"></i></div>
                     </div>
                 </li>
             </ul>
@@ -140,10 +166,24 @@
 <script>
 
     function switchMove(btn){
+        const machineLi = btn.closest("li");
+        const uuid = machineLi.querySelector(".UUID").textContent;
+        const stateInput = machineLi.querySelector(".machine_switch_box").querySelector("input");
+        stateInput.value = stateInput.value === "1" ? "0" : "1";
+        console.log(stateInput.value);
+        patchState(stateInput.value,uuid);
         btn.toggleAttribute('active');
     }
 
     function casement(btn){
+        const upIcon = "fa-solid fa-circle-chevron-up fa-2x";
+        const downIcon = "fa-solid fa-circle-chevron-down fa-2x";
+        const icon = btn.querySelector("i");
+
+        if(icon.className === upIcon){
+            icon.className = downIcon;
+        }
+        else icon.className = upIcon;
         btn.closest(".machine_box").toggleAttribute('active');
     }
     function stateInit(){
@@ -151,10 +191,58 @@
         for (const input of stateInputs) {
             console.log(input.value);
             if(input.value !== "0"){
-                input.closest(".machine_switch_box").querySelector("button").click();
+                input.closest(".machine_switch_box").querySelector("button").toggleAttribute('active');
             }
         }
     }
     stateInit();
+
+    function machineDelete(btn){
+        let result = confirm("정말 삭제하시겠습니까?");
+        if(result){
+            const machineLi = btn.closest("li");
+            const machine_uuid = machineLi.querySelector(".UUID").textContent;
+            console.log(machine_uuid);
+            const data = {uuid : machine_uuid};
+
+
+            fetch("/machine/delete",{
+                method: "DELETE",
+                headers : {
+                    "Content-Type": "application/json",
+                },
+                body : JSON.stringify(data),
+            }).then(req => {
+                console.log(req);
+                if(req.ok && req.status === 200){
+                    machineLi.remove();
+                }
+                else {
+                    alert("machine 삭제에 실패하였습니다.");
+                }
+            })
+        }
+    }
+
+    function patchState(state, uuid){
+        const data = {
+            uuid : uuid,
+            state : state
+        }
+        fetch("/machine/state",{
+            method: "PATCH",
+            headers : {
+                "Content-Type": "application/json",
+            },
+            body : JSON.stringify(data),
+        }).then(req => {
+            if(req.ok && req.status === 200){
+                console.log(req);
+            }
+            else {
+                alert("machine update에 실패하였습니다.");
+            }
+        })
+    }
 
 </script>
