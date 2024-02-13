@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
+import java.util.Objects;
 
 @Log4j2
 @Controller
@@ -27,10 +28,15 @@ public class MainController {
             Model model
 
     ){
-        List<MachineDTO> machineList = machineService.get_all_machine(user);
-        log.error(machineList);
-        model.addAttribute("machines",machineList);
-        return "main/main";
+        if(!Objects.isNull(user)){
+            List<MachineDTO> machineList = machineService.get_all_machine(user);
+            log.error(machineList);
+            model.addAttribute("machines",machineList);
+            return "main/main";
+        }
+        else{
+            return "user/login";
+        }
     }
 
 
