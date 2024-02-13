@@ -244,5 +244,24 @@
             }
         })
     }
-
+    function patchName(name, uuid){
+        const data = {
+            uuid : uuid,
+            name : name
+        }
+        fetch("/machine/name",{
+            method: "PATCH",
+            headers : {
+                "Content-Type": "application/json",
+            },
+            body : JSON.stringify(data),
+        }).then(req => {
+            if(req.ok && req.status === 200){
+                console.log(req);
+            }
+            else {
+                alert("machine update에 실패하였습니다.");
+            }
+        })
+    }
 </script>
