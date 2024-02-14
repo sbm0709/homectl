@@ -13,4 +13,6 @@ public interface MachineMapper {
     public void delete_machine_by_uuid(MachineDTO machineDTO);
 
     public void machine_state_update(MachineDTO machineDTO);
+
+    public void machine_name_update(MachineDTO machineDTO);
 }

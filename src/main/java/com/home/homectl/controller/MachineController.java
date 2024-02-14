@@ -40,5 +40,13 @@ public class MachineController {
         log.error(machineDTO);
         machineService.machine_state_update(machineDTO);
     }
-
+    @ResponseBody
+    @PatchMapping("/name")
+    public void machine_name_update(
+            @AuthenticationPrincipal UserDTO userDTO,
+            @RequestBody MachineDTO machineDTO
+    ){
+        log.error(machineDTO);
+        machineService.machine_state_update(machineDTO);
+    }
 }
