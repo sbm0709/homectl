@@ -79,6 +79,34 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+<!--		&lt;!&ndash; https://mvnrepository.com/artifact/org.knowm.xchart/xchart &ndash;&gt;-->
+<!--		<dependency>-->
+<!--			<groupId>org.knowm.xchart</groupId>-->
+<!--			<artifactId>xchart</artifactId>-->
+<!--			<version>3.8.7</version>-->
+<!--		</dependency>-->
+
+<!--		&lt;!&ndash; https://mvnrepository.com/artifact/com.madgag/animated-gif-lib &ndash;&gt;-->
+<!--		<dependency>-->
+<!--			<groupId>com.madgag</groupId>-->
+<!--			<artifactId>animated-gif-lib</artifactId>-->
+<!--			<version>1.4</version>-->
+<!--		</dependency>-->
+
+<!--		&lt;!&ndash; https://mvnrepository.com/artifact/de.erichseifert.vectorgraphics2d/VectorGraphics2D &ndash;&gt;-->
+<!--		<dependency>-->
+<!--			<groupId>de.erichseifert.vectorgraphics2d</groupId>-->
+<!--			<artifactId>VectorGraphics2D</artifactId>-->
+<!--			<version>0.13</version>-->
+<!--		</dependency>-->
+<!--		&lt;!&ndash; https://mvnrepository.com/artifact/de.rototor.pdfbox/graphics2d &ndash;&gt;-->
+<!--		<dependency>-->
+<!--			<groupId>de.rototor.pdfbox</groupId>-->
+<!--			<artifactId>graphics2d</artifactId>-->
+<!--			<version>3.0.1</version>-->
+<!--		</dependency>-->
+
 	</dependencies>
 
 	<build>

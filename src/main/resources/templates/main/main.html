@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="../../static/css/main/public/header.css"  th:href="@{/css/main/public/header.css}">
     <link rel="stylesheet" href="../../static/css/main/public/public.css"  th:href="@{/css/main/public/public.css}">
     <script src="https://kit.fontawesome.com/3e73eec07c.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 
 <style>
@@ -110,6 +112,11 @@
     .machine_title:focus{
         outline: none;
     }
+    .chart_container{
+        position: relative;
+        width: 100%;
+        max-height: 500px;
+    }
 
 
 
@@ -161,6 +168,16 @@
                         <div class="type_box">
                             <span th:text="|TYPE : ${machine.getType()}|"></span>
                         </div>
+<!--                        <th:block th:if="${machine.getType() == 'cctv'}">-->
+<!--                             <img src="#" alt="카메라 사진">-->
+<!--                        </th:block>-->
+                        <th:block th:if="${machine.getType() == 'switch' || machine.getType() == 'pan'}">
+                            <div class="chart_container">
+                                <canvas th:data-log="${machine.getPower_log()}"  >
+
+                                </canvas>
+                            </div>
+                        </th:block>
                         <div class="delete_box" onclick="machineDelete(this)"><i class="fa-solid fa-xmark fa-2x"></i></div>
                     </div>
                 </li>
@@ -193,6 +210,7 @@
         else icon.className = upIcon;
         btn.closest(".machine_box").toggleAttribute('active');
     }
+
     function stateInit(){
         const stateInputs = document.querySelectorAll(".machine_state");
         for (const input of stateInputs) {
@@ -251,6 +269,7 @@
             }
         })
     }
+
     function patchName(input){
 
         const data = {
@@ -278,4 +297,57 @@
     function reWriteName(nameInput){
         nameInput.toggleAttribute("readonly");
     }
+
+    const canvases = document.querySelectorAll("canvas");
+    for (const canvas of canvases) {
+        chartInit(canvas);
+    }
+
+
+
+
+    function chartInit(canvas){
+    //     type: 'line',
+    //         data: {},
+    //     options: {},
+    //     options: {},
+    //     plugins: []
+        const datas = canvas.getAttribute("data-log");
+        let local = [];
+        console.log(canvas);
+
+        console.log(datas[0])
+        // for (let i = 0; i < datas.length; i++) {
+        //     local.push(datas[i]);
+        // }
+        // for (const data of datas) {
+        //     console.log(data);
+        //     local.push(data)
+        // }
+        console.log(local);
+
+
+
+        new Chart(canvas, {
+            type: 'line',
+            data: {
+                datasets: [{
+                    label: 'usage time',
+                    data: local,
+                    parsing: {
+                        xAxisKey: 'time',
+                        yAxisKey: 'time',
+                    }
+                }]
+            },
+            // options: {
+            //     scales: {
+            //         y: {
+            //             beginAtZero: true
+            //         }
+            //     }
+            // }
+        });
+    }
+
 </script>

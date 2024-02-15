@@ -28,6 +28,7 @@ public class MachineService {
     public void machine_state_update(MachineDTO machineDTO){
         machineMapper.machine_state_update(machineDTO);
     }
+
     public void machine_name_update(MachineDTO machineDTO){
         machineMapper.machine_name_update(machineDTO);
     }

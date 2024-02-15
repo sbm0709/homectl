@@ -16,6 +16,7 @@
     <typeAliases>
         <typeAlias type="com.home.homectl.dto.UserDTO" alias="UserDTO" />
         <typeAlias type="com.home.homectl.dto.MachineDTO" alias="MachineDTO" />
+        <typeAlias type="com.home.homectl.dto.PowerLogDTO" alias="PowerLogDTO" />
 
 <!--        <typeAlias type="com.push.dto.UserDTO" alias="UserDTO" />-->
     </typeAliases>

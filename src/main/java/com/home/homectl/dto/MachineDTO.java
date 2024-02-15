@@ -2,6 +2,8 @@ package com.home.homectl.dto;
 
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @ToString
@@ -14,4 +16,5 @@ public class MachineDTO {
     private int state;
     private String type;
     private String user_id;
+    private List<PowerLogDTO> power_log;
 }
