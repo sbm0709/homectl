@@ -1,0 +1,198 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>register</title>
+    <link rel="stylesheet" href="../../static/css/main/public/public.css" th:href="@{../static/css/main/public/public.css}">
+    <script src="https://kit.fontawesome.com/3e73eec07c.js" crossorigin="anonymous"></script>
+
+</head>
+
+<style>
+    main{
+        width: 900px;
+        max-height: 1200px;
+        margin: 0 auto;
+    }
+    .register_box{
+        text-align: center;
+        padding: 100px 150px 150px 150px;
+        margin: 20px auto;
+        background-color: #f5f5f5;
+        box-shadow: 0 0 10px #6e6e6e;
+    }
+    .logo_box{
+        margin: 20px 0;
+    }
+    .inputBox{
+        margin: 10px 0;
+        position: relative;
+    }
+    .inputBox > input{
+        display: inline-block;
+        height: 50px;
+        width: 70%;
+        border-radius: 12px;
+    }
+    #id{
+        width: 57%;
+    }
+    .inputBox > label{
+        display: inline-block;
+        width: 25%;
+    }
+    .label{
+        left: 12.5%;
+        font-size: 10px;
+        color: #b7b7b7;
+        display: block;
+        position: relative;
+        margin-bottom: 5px;
+        text-align: left;
+    }
+    .btn_box{
+        display: flex;
+        justify-content: space-evenly;
+        margin-top: 20px;
+    }
+    .btn_box button{
+        margin-top: 20px;
+        width: 30%;
+        height: 40px;
+        border-radius: 10px;
+        cursor: pointer;
+    }
+    main input{
+        padding: 5px 15px;
+        font-size: 18px;
+    }
+    .checkBtn{
+        width: 70px;
+        height: 50px;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+    .check_result_box[active]{
+        color: #78ff8a;
+    }
+
+    .check_result_box{
+        color: #fd7892;
+        text-align: right;
+        padding-right: 20px;
+    }
+</style>
+
+<body>
+    <main>
+        <form class="register_box" action="/user/register" method="post">
+            <div class="logo_box">
+                <h1><i class="fa-solid fa-house-user"></i> Home Care</h1>
+            </div>
+
+            <div class="inputBox">
+                <span class="label">
+                    아이디
+                </span>
+                <label for="id">
+                    <i>이미지 예정</i>
+                </label>
+                <input type="text" name="id" id="id" oninput="initInput()">
+                <button class="checkBtn" type="button" onclick="duplicateCheck()">
+                    중복확인
+                </button>
+                <div class="check_result_box">
+                    <span class="check_result"></span>
+                    <input hidden="hidden" type="text" value="0">
+                </div>
+            </div>
+
+            <div class="inputBox">
+                <span class="label">
+                    비밀번호
+                </span>
+                <label for="password">
+                    <i>이미지 예정</i>
+                </label>
+                <input type="password" name="pw" id="password" >
+            </div>
+
+            <div class="inputBox">
+                <span class="label">
+                    비밀번호
+                </span>
+                <label for="check">
+                    비밀번호 확인
+                </label>
+                <input type="password" name="check" id="check" oninput="passwordCheck()">
+            </div>
+
+            <div class="btn_box">
+                <button type="button" onclick="register()">회원 가입</button>
+                <button type="button" onclick="canceled()">취소</button>
+            </div>
+
+        </form>
+    </main>
+</body>
+</html>
+
+<script>
+    const duplicateInput = document.querySelector(".check_result_box").querySelector("input");
+    function allOkay(){
+        if(duplicateInput.value !== "1"){
+            alert("아이디 중복확인을 진행해 주세요");
+            return false;
+        }
+        else if(!passwordCheck()){
+            alert("패스워드를 확인해 주세요");
+            return  false;
+        }
+        return  true;
+    }
+
+    function duplicateCheck(){
+        const id = document.querySelector("#id").value;
+        if(id.trim() === "") {
+            alert("아이디를 입력해 주세요");
+            return;
+        }
+        const messageBox = document.querySelector(".check_result_box");
+        const message = messageBox.querySelector("span");
+
+        fetch("/user/check/"+id,{
+            method : "GET",
+        }).then(req => {
+            return req.json();
+        }).then(result => {
+            if(result){
+                message.textContent = "사용가능한 아이디입니다.";
+                messageBox.setAttribute("active","active");
+                duplicateInput.value = "1";
+            }
+            else {
+                message.textContent = "중복된 아이디입니다.";
+                messageBox.removeAttribute("active");
+            }
+        })
+    }
+    function initInput(){
+        duplicateInput.value = "0";
+    }
+
+    function register() {
+        if(allOkay()) {
+            document.querySelector("form").submit();
+        }
+    }
+
+    function passwordCheck(){
+        const password = document.querySelector("#password").value;
+        const check = document.querySelector("#check").value;
+         return password === check;
+    }
+
+    function canceled(){
+        location.href="/user/login";
+    }
+</script>

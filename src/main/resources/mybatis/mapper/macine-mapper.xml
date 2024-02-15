@@ -19,6 +19,7 @@
         UPDATE machine SET `state` = #{state}
         WHERE `uuid` = #{uuid};
     </update>
+
     <update id="machine_name_update">
         UPDATE machine SET `name` = #{name}
         WHERE `uuid` = #{uuid};

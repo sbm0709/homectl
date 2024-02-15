@@ -8,5 +8,5 @@ import org.apache.ibatis.annotations.Mapper;
 public interface UserMapper {
     public UserDTO find_user(UserDTO user);
 
-
+    void user_register(UserDTO userDTO);
 }

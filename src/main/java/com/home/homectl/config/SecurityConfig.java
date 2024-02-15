@@ -44,6 +44,7 @@ public class SecurityConfig {
 //        http.oauth2Login(configure -> {
 //            configure.loginPage("/user/login").permitAll();
 //        });
+
         return http.build();
     }
 

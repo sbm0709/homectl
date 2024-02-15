@@ -3,20 +3,11 @@
     <meta charset="UTF-8">
     <title>login</title>
     <link rel="stylesheet" href="../../static/css/main/public/public.css" th:href="@{../static/css/main/public/public.css}">
+    <script src="https://kit.fontawesome.com/3e73eec07c.js" crossorigin="anonymous"></script>
+
 </head>
 <style>
-    /**{*/
-    /*    margin: 0;*/
-    /*    padding: 0;*/
-    /*    box-sizing: border-box;*/
-    /*}*/
-    /*a{*/
-    /*    text-decoration: none;*/
-    /*}*/
 
-    /*ul, li, dt, dd {*/
-    /*    list-style: none;*/
-    /*}*/
 
     main{
         width: 900px;
@@ -30,7 +21,7 @@
         background-color: #f5f5f5;
         box-shadow: 0 0 10px #6e6e6e;
     }
-    .login_logo_box{
+    .logo_box{
         margin: 20px 0;
     }
     .inputBox{
@@ -68,12 +59,17 @@
         border-radius: 10px;
         cursor: pointer;
     }
+
+    input{
+        padding: 5px 15px;
+        font-size: 18px;
+    }
 </style>
 <body>
     <main>
         <form class="login_box" method="post" action="/user/login">
-            <div class="login_logo_box">
-                <h1>웹 이름 or 로고</h1>
+            <div class="logo_box">
+                <h1><i class="fa-solid fa-house-user"></i> Home Care</h1>
             </div>
 
             <div class="inputBox">
@@ -94,10 +90,10 @@
                 <label for="pw">
                     <i>이미지 예정</i>
                 </label>
-                <input type="text" name="password" id="pw" >
+                <input type="password" name="password" id="pw" >
             </div>
             <div class="btn_box">
-                <button type="button">회원가입</button>
+                <button type="button" onclick="goRegister()">회원가입</button>
                 <button>로그인</button>
                 <button type="button">아이디 / 비번찾기</button>
             </div>
@@ -105,3 +101,9 @@
     </main>
 </body>
 </html>
+
+<script>
+    function goRegister(){
+        location.href="/user/register";
+    }
+</script>

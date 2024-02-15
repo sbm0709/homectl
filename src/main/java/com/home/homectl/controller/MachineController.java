@@ -46,7 +46,6 @@ public class MachineController {
             @AuthenticationPrincipal UserDTO userDTO,
             @RequestBody MachineDTO machineDTO
     ){
-        log.error(machineDTO);
-        machineService.machine_state_update(machineDTO);
+        machineService.machine_name_update(machineDTO);
     }
 }

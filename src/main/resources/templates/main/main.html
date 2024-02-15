@@ -102,6 +102,14 @@
         justify-content: space-between;
         align-items: center;
     }
+    .machine_title{
+        border: none;
+        background-color: #e5e5e5;
+        font-size: 18px;
+    }
+    .machine_title:focus{
+        outline: none;
+    }
 
 
 
@@ -127,9 +135,8 @@
                     <div class="mini_machine_box">
                         <div class="machine">
                             <div class="machine_title_box" >
-                                <span class="machine_title" th:text="${machine.getName()}">
-                                    머신 1
-                                </span>
+                                <input readonly placeholder="machine" class="machine_title" th:data-uuid="${machine.getUuid()}"
+                                       th:value="${machine.getName()}" onclick="reWriteName(this)" onchange="patchName(this)"/>
                             </div>
                             <div class="machine_switch_box">
                                 <input hidden="hidden" name="state" class="machine_state" th:value="${machine.getState()}">
@@ -244,11 +251,13 @@
             }
         })
     }
-    function patchName(name, uuid){
+    function patchName(input){
+
         const data = {
-            uuid : uuid,
-            name : name
+            uuid : input.getAttribute("data-uuid"),
+            name : input.value
         }
+
         fetch("/machine/name",{
             method: "PATCH",
             headers : {
@@ -258,10 +267,15 @@
         }).then(req => {
             if(req.ok && req.status === 200){
                 console.log(req);
+                input.toggleAttribute("readonly");
             }
             else {
                 alert("machine update에 실패하였습니다.");
             }
         })
+    }
+
+    function reWriteName(nameInput){
+        nameInput.toggleAttribute("readonly");
     }
 </script>
