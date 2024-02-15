@@ -1,6 +1,7 @@
 package com.home.homectl.mapper;
 
 import com.home.homectl.dto.MachineDTO;
+import com.home.homectl.dto.PowerLogDTO;
 import com.home.homectl.dto.UserDTO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -15,4 +16,6 @@ public interface MachineMapper {
     public void machine_state_update(MachineDTO machineDTO);
 
     public void machine_name_update(MachineDTO machineDTO);
+
+    public List<PowerLogDTO> get_machine_log(String uuid);
 }

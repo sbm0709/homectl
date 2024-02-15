@@ -2,6 +2,7 @@ package com.home.homectl.service;
 
 
 import com.home.homectl.dto.MachineDTO;
+import com.home.homectl.dto.PowerLogDTO;
 import com.home.homectl.dto.UserDTO;
 import com.home.homectl.mapper.MachineMapper;
 import lombok.extern.log4j.Log4j2;
@@ -32,4 +33,6 @@ public class MachineService {
     public void machine_name_update(MachineDTO machineDTO){
         machineMapper.machine_name_update(machineDTO);
     }
+
+    public List<PowerLogDTO> get_machine_log(String uuid){return machineMapper.get_machine_log(uuid);}
 }

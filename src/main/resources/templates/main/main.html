@@ -173,7 +173,7 @@
 <!--                        </th:block>-->
                         <th:block th:if="${machine.getType() == 'switch' || machine.getType() == 'pan'}">
                             <div class="chart_container">
-                                <canvas th:data-log="${machine.getPower_log()}"  >
+                                <canvas th:data-uuid="${machine.getUuid()}"  >
 
                                 </canvas>
                             </div>
@@ -312,11 +312,27 @@
     //     options: {},
     //     options: {},
     //     plugins: []
-        const datas = canvas.getAttribute("data-log");
+        const uuid = canvas.getAttribute("data-uuid");
         let local = [];
-        console.log(canvas);
+        const dataPromise = get_log_data(uuid);
+        let datas = [];
+        console.log(dataPromise);
+        // dataPromise.then(result => {
+        //     for (const resultElement of result) {
+        //         datas.push(resultElement);
+        //     }
+        // });
+        console.log(datas)
+        const keys = [];
+        keys.push("power");
+        keys.push("time");
 
-        console.log(datas[0])
+
+        // console.log(keys)
+
+        // for (let i = 0; i < datas.length; i++) {
+        //
+        // }
         // for (let i = 0; i < datas.length; i++) {
         //     local.push(datas[i]);
         // }
@@ -324,30 +340,40 @@
         //     console.log(data);
         //     local.push(data)
         // }
-        console.log(local);
 
 
 
-        new Chart(canvas, {
-            type: 'line',
-            data: {
-                datasets: [{
-                    label: 'usage time',
-                    data: local,
-                    parsing: {
-                        xAxisKey: 'time',
-                        yAxisKey: 'time',
-                    }
-                }]
-            },
-            // options: {
-            //     scales: {
-            //         y: {
-            //             beginAtZero: true
-            //         }
-            //     }
-            // }
-        });
+        // new Chart(canvas, {
+        //     type: 'line',
+        //     data: {
+        //         datasets: [{
+        //             label: 'usage time',
+        //             data: local,
+        //             parsing: {
+        //                 xAxisKey: 'time',
+        //                 yAxisKey: 'time',
+        //             }
+        //         }]
+        //     },
+        //     // options: {
+        //     //     scales: {
+        //     //         y: {
+        //     //             beginAtZero: true
+        //     //         }
+        //     //     }
+        //     // }
+        // });
     }
 
+     async function get_log_data(uuid){
+        const data = await fetch("/machine/log/"+uuid,{
+            method: "GET"
+        }).then(req => {
+            if(req.ok && req.status === 200){
+                return req.json();
+            }
+        })
+
+         return data;
+     }
 </script>

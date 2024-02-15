@@ -13,12 +13,9 @@
     </resultMap>
 
 
-    <select id="get_all_machine" resultMap="get_machine_with_log">
-        SELECT *,
-        M.uuid as m_uuid
+    <select id="get_all_machine" resultType="MachineDTO">
+        SELECT *
         FROM machine as M
-        inner join machine_log as ML
-        ON M.uuid = ML.uuid
         WHERE user_id = #{id};
     </select>
 
@@ -37,5 +34,10 @@
         UPDATE machine SET `name` = #{name}
         WHERE `uuid` = #{uuid};
     </update>
+
+    <select id="get_machine_log" resultType="PowerLogDTO">
+        SELECT * FROM machine_log
+        WHERE uuid = #{uuid}
+    </select>
 
 </mapper>

@@ -2,6 +2,7 @@ package com.home.homectl.controller;
 
 
 import com.home.homectl.dto.MachineDTO;
+import com.home.homectl.dto.PowerLogDTO;
 import com.home.homectl.dto.UserDTO;
 import com.home.homectl.service.MachineService;
 import lombok.extern.log4j.Log4j2;
@@ -9,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @Log4j2
@@ -47,5 +50,14 @@ public class MachineController {
             @RequestBody MachineDTO machineDTO
     ){
         machineService.machine_name_update(machineDTO);
+    }
+
+
+    @ResponseBody
+    @GetMapping("/log/{uuid}")
+    public List<PowerLogDTO> get_machine_log(
+            @PathVariable("uuid") String uuid
+    ){
+        return machineService.get_machine_log(uuid);
     }
 }
