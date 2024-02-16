@@ -70,4 +70,13 @@ public class MachineController {
     ){
         return machineService.get_all_machine(userDTO, select);
     }
+
+    @PatchMapping("/get_img")
+    @ResponseBody
+    public String get_img(
+            @AuthenticationPrincipal UserDTO userDTO,
+            @RequestBody String uuid
+    ){
+        return machineService.get_img(userDTO.getId(),uuid);
+    }
 }

@@ -46,6 +46,8 @@
     <select id="get_machine_log" resultType="PowerLogDTO">
         SELECT * FROM machine_log
         WHERE uuid = #{uuid}
+        AND
+        time >= CURDATE() - INTERVAL 1 WEEK
         ORDER BY time
     </select>
 

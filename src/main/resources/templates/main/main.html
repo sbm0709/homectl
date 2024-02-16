@@ -117,6 +117,16 @@
         width: 100%;
         max-height: 500px;
     }
+    .camera_container{
+        width: 60%;
+        height: 400px;
+        margin: 0 auto;
+        position: relative;
+    }
+    .camera_container img{
+        width: 100%;
+        height: 100%;
+    }
 
 
 
@@ -175,11 +185,15 @@
                             <span th:text="|TYPE : ${machine.getType()}|"></span>
                         </div>
 
+                        <th:block th:if="${machine.getType() == 'cctv'}">
+                            <div class="camera_container" th:data-uuid="${machine.getUuid()}">
+                                <img src="" alt="카메라 영상">
+                            </div>
+                        </th:block>
+
                         <th:block th:if="${machine.getType() == 'switch' || machine.getType() == 'pan'}">
                             <div class="chart_container">
-                                <canvas th:data-uuid="${machine.getUuid()}"  >
-
-                                </canvas>
+                                <canvas th:data-uuid="${machine.getUuid()}"></canvas>
                             </div>
                         </th:block>
                         <div class="delete_box" onclick="machineDelete(this)"><i class="fa-solid fa-xmark fa-2x"></i></div>
@@ -195,6 +209,7 @@
 
     stateInit();
     chartCreate();
+    setInterval(cctv,300);
 
     function chartCreate(){
         const canvases = document.querySelectorAll("canvas");
@@ -420,6 +435,14 @@
                             </div>
                         </th:block>`
                 }
+                else if(machineElement.type == 'cctv'){
+                    li += `
+                        <th:block>
+                            <div class="camera_container" data-uuid="${machineElement.uuid}">
+                                <img src="" alt="카메라 영상">
+                            </div>
+                        </th:block>`
+                }
                 li += `<div class="delete_box" onclick="machineDelete(this)"><i class="fa-solid fa-xmark fa-2x"></i></div>
                     </div>
                 </li>`
@@ -436,5 +459,29 @@
             return req.json();
         })
     }
+
+    async function get_cctv_img(uuid){
+        return fetch("/machine/get_img",{
+            method: "PATCH",
+            body : uuid
+        }).then(req => {
+            return req.text();
+        })
+    }
+
+    async function active_cctv(img_box){
+        const img = img_box.querySelector("img");
+        img.setAttribute("src","data:image/jpeg;base64,"+ await get_cctv_img(img_box.getAttribute("data-uuid")));
+    }
+
+    function cctv(){
+        console.log("cctv 새로고침")
+        const img_boxes = document.querySelectorAll(".camera_container");
+        for (const imgBox of img_boxes) {
+            active_cctv(imgBox);
+        }
+    }
+
+
 
 </script>
