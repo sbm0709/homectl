@@ -18,8 +18,8 @@ public class MachineService {
     @Autowired
     private MachineMapper machineMapper;
 
-    public List<MachineDTO> get_all_machine(UserDTO userDTO){
-        return machineMapper.get_all_machine(userDTO);
+    public List<MachineDTO> get_all_machine(UserDTO userDTO, String select){
+        return machineMapper.get_all_machine(userDTO, select);
     }
 
     public void delete_machine_by_uuid(MachineDTO machineDTO){

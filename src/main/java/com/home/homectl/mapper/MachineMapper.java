@@ -9,7 +9,7 @@ import java.util.List;
 
 @Mapper
 public interface MachineMapper {
-    public List<MachineDTO> get_all_machine(UserDTO user);
+    public List<MachineDTO> get_all_machine(UserDTO user, String select);
 
     public void delete_machine_by_uuid(MachineDTO machineDTO);
 

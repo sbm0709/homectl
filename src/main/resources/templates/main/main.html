@@ -129,15 +129,21 @@
                 <span th:text="|현재 등록된 Machine : ${machines.size()}개|"></span>
             </div>
             <div class="select_box">
-                <select name="order_select" id="order">
-                    <option>
+                <select name="order_select" id="order" onchange="reload_machine_by_select(this)">
+                    <option value="0">
                         기본정렬
+                    </option>
+                    <option value="1">
+                        이름순
+                    </option>
+                    <option value="2">
+                        타입별
                     </option>
                 </select>
             </div>
         </section>
         <section>
-            <ul>
+            <ul id="machine_box">
                 <li class="machine_box" th:each="machine : ${machines}">
                     <div class="mini_machine_box">
                         <div class="machine">
@@ -168,9 +174,7 @@
                         <div class="type_box">
                             <span th:text="|TYPE : ${machine.getType()}|"></span>
                         </div>
-<!--                        <th:block th:if="${machine.getType() == 'cctv'}">-->
-<!--                             <img src="#" alt="카메라 사진">-->
-<!--                        </th:block>-->
+
                         <th:block th:if="${machine.getType() == 'switch' || machine.getType() == 'pan'}">
                             <div class="chart_container">
                                 <canvas th:data-uuid="${machine.getUuid()}"  >
@@ -188,6 +192,16 @@
 </html>
 
 <script>
+
+    stateInit();
+    chartCreate();
+
+    function chartCreate(){
+        const canvases = document.querySelectorAll("canvas");
+        for (const canvas of canvases) {
+            chartInit(canvas);
+        }
+    }
 
     function switchMove(btn){
         const machineLi = btn.closest("li");
@@ -220,7 +234,6 @@
             }
         }
     }
-    stateInit();
 
     function machineDelete(btn){
         let result = confirm("정말 삭제하시겠습니까?");
@@ -298,28 +311,11 @@
         nameInput.toggleAttribute("readonly");
     }
 
-    const canvases = document.querySelectorAll("canvas");
-    for (const canvas of canvases) {
-        chartInit(canvas);
-    }
-
-
-
     async function chartInit(canvas){
-    //     type: 'line',
-    //         data: {},
-    //     options: {},
-    //     options: {},
-    //     plugins: []
+
         const uuid = canvas.getAttribute("data-uuid");
         const data = await get_log_data(uuid);
 
-        console.log(data);
-        const keys = [];
-        keys.push("power");
-        keys.push("time");
-
-        const label = [];
         const powerData = [];
         const timeData = [];
 
@@ -329,8 +325,6 @@
             powerData.push(tempData.power);
         }
 
-        console.log(timeData)
-        console.log(powerData)
         new Chart(canvas, {
             type: 'line',
             data: {
@@ -351,7 +345,7 @@
         });
     }
 
-     async function get_log_data(uuid){
+    async function get_log_data(uuid){
          return await fetch("/machine/log/"+uuid,{
              method: "GET"
          }).then(req => {
@@ -378,4 +372,69 @@
         return date.getFullYear() + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
 
     }
+
+    async function reload_machine_by_select(select){
+
+        const machine = await get_machine_on_select(select);
+        const machine_box = document.getElementById("machine_box");
+        machine_box.innerHTML = "";
+        for (const machineElement of machine) {
+            console.log(machineElement);
+            let li = `
+                <li class="machine_box">
+                    <div class="mini_machine_box">
+                        <div class="machine">
+                            <div class="machine_title_box" >
+                                <input readonly placeholder="machine" class="machine_title" data-uuid="${machineElement.uuid}"
+                                       value="${machineElement.name}" onclick="reWriteName(this)" onchange="patchName(this)"/>
+                            </div>
+                            <div class="machine_switch_box">
+                                <input hidden="hidden" name="state" class="machine_state" value="${machineElement.state}">
+                                <button class="switch" onclick="switchMove(this)">
+                                    <span class="on_off_Btn"></span>
+                                </button>
+                            </div>
+                        </div>
+                        <div>
+                            <button class="casementBtn" onclick="casement(this)">
+                                <i class="fa-solid fa-circle-chevron-down fa-2x"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="machine_option_box">
+                        <div class="UUID_box">
+                            <span>
+                                UUID :
+                            </span>
+                            <span class="UUID">${machineElement.uuid}</span>
+                        </div>
+                        <div class="type_box">
+                            <span>TYPE : ${machineElement.type}</span>
+                        </div>`
+                if(machineElement.type == 'switch' || machineElement.type == 'pan'){
+                    li += `<th:block>
+                            <div class="chart_container">
+                                <canvas data-uuid="${machineElement.uuid}"  >
+
+                                </canvas>
+                            </div>
+                        </th:block>`
+                }
+                li += `<div class="delete_box" onclick="machineDelete(this)"><i class="fa-solid fa-xmark fa-2x"></i></div>
+                    </div>
+                </li>`
+            machine_box.insertAdjacentHTML("beforeend",li);
+        }
+        stateInit();
+        chartCreate();
+    }
+
+    async function get_machine_on_select(select){
+        return fetch(`/machine/${select.value}`,{
+            method : "GET"
+        }).then(req => {
+            return req.json();
+        })
+    }
+
 </script>

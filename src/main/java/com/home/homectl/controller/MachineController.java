@@ -30,7 +30,7 @@ public class MachineController {
             @RequestBody MachineDTO machineDTO
     ){
         log.error(machineDTO);
-//        machineService.delete_machine_by_uuid(machineDTO);
+        machineService.delete_machine_by_uuid(machineDTO);
 
     }
 
@@ -59,5 +59,15 @@ public class MachineController {
             @PathVariable("uuid") String uuid
     ){
         return machineService.get_machine_log(uuid);
+    }
+
+
+    @ResponseBody
+    @GetMapping("/{select}")
+    public List<MachineDTO> get_machine_on_selct(
+            @AuthenticationPrincipal UserDTO userDTO,
+            @PathVariable("select") String select
+    ){
+        return machineService.get_all_machine(userDTO, select);
     }
 }

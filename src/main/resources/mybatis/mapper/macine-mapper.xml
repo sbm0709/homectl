@@ -4,24 +4,32 @@
 
 <mapper namespace="com.home.homectl.mapper.MachineMapper">
 
-    <resultMap id="get_machine_with_log" type="MachineDTO" autoMapping="true">
-        <id column="m_uuid" property="uuid"/>
-        <collection property="power_log" autoMapping="true" ofType="PowerLogDTO" javaType="list">
-            <id property="time" column="time"/>
-            <result column="m_uuid" property="uuid" />
-        </collection>
-    </resultMap>
+<!--    <resultMap id="get_machine_with_log" type="MachineDTO" autoMapping="true">-->
+<!--        <id column="m_uuid" property="uuid"/>-->
+<!--        <collection property="power_log" autoMapping="true" ofType="PowerLogDTO" javaType="list">-->
+<!--            <id property="time" column="time"/>-->
+<!--            <result column="m_uuid" property="uuid" />-->
+<!--        </collection>-->
+<!--    </resultMap>-->
 
 
     <select id="get_all_machine" resultType="MachineDTO">
         SELECT *
         FROM machine as M
-        WHERE user_id = #{id};
+        WHERE user_id = #{user.id}
+        <choose>
+            <when test="select == 1">
+                ORDER BY name
+            </when>
+            <when test="select == 2">
+                ORDER BY type
+            </when>
+        </choose>
     </select>
 
 
     <delete id="delete_machine_by_uuid" >
-        delete * FROM machine
+        delete FROM machine
         WHERE uuid = #{uuid}
     </delete>
 

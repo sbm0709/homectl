@@ -6,6 +6,7 @@ import com.home.homectl.dto.UserDTO;
 import com.home.homectl.mapper.MachineMapper;
 import com.home.homectl.service.MachineService;
 import lombok.extern.log4j.Log4j2;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -26,11 +27,9 @@ public class MainController {
     public String get_main(
             @AuthenticationPrincipal UserDTO user,
             Model model
-
     ){
         if(!Objects.isNull(user)){
-            List<MachineDTO> machineList = machineService.get_all_machine(user);
-            log.error(machineList);
+            List<MachineDTO> machineList = machineService.get_all_machine(user, null);
             model.addAttribute("machines",machineList);
             return "main/main";
         }

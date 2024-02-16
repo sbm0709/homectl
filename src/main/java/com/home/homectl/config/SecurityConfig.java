@@ -41,6 +41,10 @@ public class SecurityConfig {
             configure.permitAll();
         });
 
+        http.logout(configure -> {
+            configure.logoutUrl("/user/logout")
+                    .logoutSuccessUrl("/user/login");
+        });
 //        http.oauth2Login(configure -> {
 //            configure.loginPage("/user/login").permitAll();
 //        });
