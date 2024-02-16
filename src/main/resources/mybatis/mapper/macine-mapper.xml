@@ -38,6 +38,7 @@
     <select id="get_machine_log" resultType="PowerLogDTO">
         SELECT * FROM machine_log
         WHERE uuid = #{uuid}
+        ORDER BY time
     </select>
 
 </mapper>

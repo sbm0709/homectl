@@ -305,75 +305,77 @@
 
 
 
-
-    function chartInit(canvas){
+    async function chartInit(canvas){
     //     type: 'line',
     //         data: {},
     //     options: {},
     //     options: {},
     //     plugins: []
         const uuid = canvas.getAttribute("data-uuid");
-        let local = [];
-        const dataPromise = get_log_data(uuid);
-        let datas = [];
-        console.log(dataPromise);
-        // dataPromise.then(result => {
-        //     for (const resultElement of result) {
-        //         datas.push(resultElement);
-        //     }
-        // });
-        console.log(datas)
+        const data = await get_log_data(uuid);
+
+        console.log(data);
         const keys = [];
         keys.push("power");
         keys.push("time");
 
+        const label = [];
+        const powerData = [];
+        const timeData = [];
 
-        // console.log(keys)
+        for (let i = 0; i < data.length; i++) {
+            const tempData = data[i];
+            timeData.push(dateFormat(tempData.time).toString());
+            powerData.push(tempData.power);
+        }
 
-        // for (let i = 0; i < datas.length; i++) {
-        //
-        // }
-        // for (let i = 0; i < datas.length; i++) {
-        //     local.push(datas[i]);
-        // }
-        // for (const data of datas) {
-        //     console.log(data);
-        //     local.push(data)
-        // }
-
-
-
-        // new Chart(canvas, {
-        //     type: 'line',
-        //     data: {
-        //         datasets: [{
-        //             label: 'usage time',
-        //             data: local,
-        //             parsing: {
-        //                 xAxisKey: 'time',
-        //                 yAxisKey: 'time',
-        //             }
-        //         }]
-        //     },
-        //     // options: {
-        //     //     scales: {
-        //     //         y: {
-        //     //             beginAtZero: true
-        //     //         }
-        //     //     }
-        //     // }
-        // });
+        console.log(timeData)
+        console.log(powerData)
+        new Chart(canvas, {
+            type: 'line',
+            data: {
+                labels: timeData,
+                datasets: [{
+                    label: 'usage time',
+                    data: powerData,
+                    borderWidth : 1
+                }]
+            },
+            options: {
+                min: 0,
+                max: 1,
+                ticks: {
+                    stepSize: 1
+                }
+            }
+        });
     }
 
      async function get_log_data(uuid){
-        const data = await fetch("/machine/log/"+uuid,{
-            method: "GET"
-        }).then(req => {
-            if(req.ok && req.status === 200){
-                return req.json();
-            }
-        })
-
-         return data;
+         return await fetch("/machine/log/"+uuid,{
+             method: "GET"
+         }).then(req => {
+             if(req.ok && req.status === 200){
+                 return req.json();
+             }
+         })
      }
+
+    function dateFormat(datetime){
+        let date = new Date(datetime);
+        let month = date.getMonth() + 1;
+        let day = date.getDate();
+        let hour = date.getHours();
+        let minute = date.getMinutes();
+        let second = date.getSeconds();
+
+        month = month >= 10 ? month : '0' + month;
+        day = day >= 10 ? day : '0' + day;
+        hour = hour >= 10 ? hour : '0' + hour;
+        minute = minute >= 10 ? minute : '0' + minute;
+        second = second >= 10 ? second : '0' + second;
+
+        return date.getFullYear() + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+
+    }
 </script>
