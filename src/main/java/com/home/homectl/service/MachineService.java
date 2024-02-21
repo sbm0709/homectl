@@ -17,6 +17,7 @@ import org.springframework.web.client.RestTemplate;
 
 //import java.net.http.*;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Log4j2
@@ -53,7 +54,11 @@ public class MachineService {
         HttpEntity<String> requestEntity = new HttpEntity<>(headers);
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<byte[]> responseEntity = restTemplate.exchange(url, HttpMethod.POST, requestEntity, byte[].class);
-        byte[] imageBytes = responseEntity.getBody();
+        byte[] imageBytes = null;
+
+        if(Objects.nonNull(responseEntity.getBody())){
+         imageBytes = responseEntity.getBody();
+        }
 
         return Base64.encodeBase64String(imageBytes);
     }
