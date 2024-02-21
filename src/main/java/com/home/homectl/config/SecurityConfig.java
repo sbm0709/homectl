@@ -24,7 +24,6 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
-//        http.oauth2Login()
 
         http.csrf(csrf ->{
             csrf.disable();
@@ -45,9 +44,7 @@ public class SecurityConfig {
             configure.logoutUrl("/user/logout")
                     .logoutSuccessUrl("/user/login");
         });
-//        http.oauth2Login(configure -> {
-//            configure.loginPage("/user/login").permitAll();
-//        });
+
 
         return http.build();
     }
@@ -61,6 +58,5 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder(){
 
         return new BCryptPasswordEncoder();
-//        return NoOpPasswordEncoder.getInstance();
     }
 }

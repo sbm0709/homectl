@@ -16,5 +16,4 @@ public class MachineDTO {
     private int state;
     private String type;
     private String user_id;
-//    private List<PowerLogDTO> power_log;
 }
