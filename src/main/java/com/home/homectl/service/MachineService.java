@@ -62,4 +62,6 @@ public class MachineService {
 
         return Base64.encodeBase64String(imageBytes);
     }
+
+    public void insert_machine_log(PowerLogDTO powerLogDTO){machineMapper.insert_machine_log(powerLogDTO);}
 }

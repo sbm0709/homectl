@@ -48,7 +48,15 @@
         WHERE uuid = #{uuid}
         AND
         time >= CURDATE() - INTERVAL 1 WEEK
-        ORDER BY time
+        ORDER BY time DESC
+        LIMIT 15
     </select>
+
+    <insert id="insert_machine_log">
+        INSERT INTO `machine_log`
+        (`power`,`time`, `uuid`)
+        VALUES
+        (#{power},#{time}, #{uuid});
+    </insert>
 
 </mapper>

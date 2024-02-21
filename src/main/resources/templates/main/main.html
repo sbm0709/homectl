@@ -182,6 +182,7 @@
                             <span th:text="${machine.getUuid()}" class="UUID"></span>
                         </div>
                         <div class="type_box">
+                            <input type="hidden" th:value="${machine.getType()}">
                             <span th:text="|TYPE : ${machine.getType()}|"></span>
                         </div>
 
@@ -218,14 +219,22 @@
         }
     }
 
-    function switchMove(btn){
-        const machineLi = btn.closest("li");
-        const uuid = machineLi.querySelector(".UUID").textContent;
-        const stateInput = machineLi.querySelector(".machine_switch_box").querySelector("input");
-        stateInput.value = stateInput.value === "1" ? "0" : "1";
-        console.log(stateInput.value);
-        patchState(stateInput.value,uuid);
-        btn.toggleAttribute('active');
+    async function switchMove(btn){
+       const machineLi = btn.closest("li");
+       const uuid = machineLi.querySelector(".UUID").textContent;
+       const stateInput = machineLi.querySelector(".machine_switch_box").querySelector("input");
+       stateInput.value = stateInput.value === "1" ? "0" : "1";
+       patchState(stateInput.value,uuid);
+       const type = machineLi.querySelector(".type_box").querySelector("input").value;
+       btn.toggleAttribute('active');
+       await sleep(0.2);
+       if(type !== "cctv"){
+         await chartUpdate(machineLi.querySelector("canvas"));
+       }
+    }
+
+    function sleep(sec) {
+        return new Promise(resolve => setTimeout(resolve, sec * 1000));
     }
 
     function casement(btn){
@@ -290,10 +299,30 @@
             body : JSON.stringify(data),
         }).then(req => {
             if(req.ok && req.status === 200){
-                console.log(req);
+                insertLog(uuid,state);
             }
             else {
                 alert("machine update에 실패하였습니다.");
+            }
+        })
+    }
+
+    function insertLog(uuid,state) {
+        const data = {
+            uuid : uuid,
+            power : state
+        }
+        fetch("/machine/log",{
+            method: "POST",
+            headers : {
+                "Content-Type": "application/json",
+            },
+            body : JSON.stringify(data),
+        }).then(req => {
+            if(req.ok && req.status === 200){
+            }
+            else {
+                alert("machine log생성에 실패하였습니다.");
             }
         })
     }
@@ -330,7 +359,9 @@
 
         const uuid = canvas.getAttribute("data-uuid");
         const data = await get_log_data(uuid);
-
+        data.sort((a, b) => {
+            return new Date(a.time).getTime() - new Date(b.time).getTime();
+        });
         const powerData = [];
         const timeData = [];
 
@@ -340,24 +371,54 @@
             powerData.push(tempData.power);
         }
 
-        new Chart(canvas, {
-            type: 'line',
+
+        const chart = new Chart(canvas, {
+            type: 'bar',
             data: {
                 labels: timeData,
                 datasets: [{
                     label: 'usage time',
                     data: powerData,
-                    borderWidth : 1
+                    categoryPercentage: 1,
+                    barPercentage: 1,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)', // 면적의 색상 설정
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1,
                 }]
             },
             options: {
-                min: 0,
-                max: 1,
                 ticks: {
                     stepSize: 1
-                }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                    },
+                    y: {
+                        grid: {
+                            display: false
+                        },
+                        position: 'left',
+                        min: 0,
+                        max: 1.3
+                    }
+                },
             }
         });
+
+    }
+
+    async function chartUpdate(canvas) {
+        const container = canvas.closest("div");
+        const uuid = canvas.getAttribute("data-uuid");
+        canvas.remove();
+        container.insertAdjacentHTML("beforeend",`
+                  <canvas data-uuid="${uuid}"></canvas>
+        `);
+        const updateCanvas = container.querySelector("canvas");
+        await chartInit(updateCanvas);
     }
 
     async function get_log_data(uuid){

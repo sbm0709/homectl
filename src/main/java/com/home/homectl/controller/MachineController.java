@@ -11,6 +11,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -78,5 +79,14 @@ public class MachineController {
             @RequestBody String uuid
     ){
         return machineService.get_img(userDTO.getId(),uuid);
+    }
+
+    @ResponseBody
+    @PostMapping("/log")
+    public void insert_machine_log(
+            @RequestBody PowerLogDTO logDTO
+    ){
+        logDTO.setTime(LocalDateTime.now());
+        machineService.insert_machine_log(logDTO);
     }
 }

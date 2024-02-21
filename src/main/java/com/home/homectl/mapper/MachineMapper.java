@@ -18,4 +18,6 @@ public interface MachineMapper {
     public void machine_name_update(MachineDTO machineDTO);
 
     public List<PowerLogDTO> get_machine_log(String uuid);
+
+    public void insert_machine_log(PowerLogDTO powerLogDTO);
 }
