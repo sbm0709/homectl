@@ -475,10 +475,12 @@
     }
 
     function cctv(){
-        console.log("cctv 새로고침")
         const img_boxes = document.querySelectorAll(".camera_container");
         for (const imgBox of img_boxes) {
-            active_cctv(imgBox);
+            const switchBtn = imgBox.closest(".machine_box").querySelector(".machine_switch_box").querySelector(".switch");
+            if(switchBtn.getAttribute("active") !== null){
+                active_cctv(imgBox);
+            }
         }
     }
 
