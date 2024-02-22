@@ -7,8 +7,6 @@
 
 </head>
 <style>
-
-
     main{
         width: 900px;
         max-height: 1200px;
@@ -27,25 +25,25 @@
     .inputBox{
         margin: 10px 0;
         position: relative;
+        display: flex;
     }
     .inputBox > input{
-        display: inline-block;
         height: 50px;
         width: 70%;
         border-radius: 12px;
+        margin-top: 10px;
     }
-    .inputBox > label{
-        display: inline-block;
+    .inputBox > div{
         width: 25%;
+        height: 50px;
     }
     .label{
-        left: 12.5%;
+        text-align: center;
         font-size: 10px;
         color: #b7b7b7;
         display: block;
         position: relative;
-        margin-bottom: 5px;
-        text-align: left;
+        margin-bottom: 10px;
     }
     .btn_box{
         display: flex;
@@ -73,23 +71,18 @@
             </div>
 
             <div class="inputBox">
-                <span class="label">
-                        아이디
-                </span>
-                <label for="id">
+                <div>
+                    <span class="label">아이디</span>
                     <i class="fa-regular fa-user fa-2x"></i>
-                </label>
+                </div>
                 <input type="text" name="username" id="id" >
             </div>
 
             <div class="inputBox">
-                <span class="label">
-                    비밀번호
-                </span>
-
-                <label for="pw">
-                    <i>이미지 예정</i>
-                </label>
+                <div>
+                    <span class="label">비밀번호</span>
+                    <i class="fa-solid fa-key fa-2x"></i>
+                </div>
                 <input type="password" name="password" id="pw" >
             </div>
             <div class="btn_box">
