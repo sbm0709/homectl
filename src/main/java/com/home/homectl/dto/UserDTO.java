@@ -5,6 +5,7 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 @Getter
@@ -16,6 +17,11 @@ import java.util.Collection;
 public class UserDTO implements UserDetails {
     private String id;
     private String pw;
+    private String tel;
+    private String passwordToken;
+    private LocalDateTime tokenDeadline;
+    private String email;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

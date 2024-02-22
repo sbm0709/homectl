@@ -10,9 +10,25 @@
     </select>
 
     <insert id="user_register">
-        INSERT user (`id`, `pw`)
+        INSERT user (`id`, `pw`, `tel`)
         VALUES
-        (#{id}, #{pw})
+        (#{id}, #{pw}, #{tel})
     </insert>
 
+    <update id="update_user_token">
+        UPDATE user SET
+        `password_token`=#{passwordToken}, `token_deadline`=#{tokenDeadline}
+        WHERE id = #{id}
+    </update>
+
+    <select id="find_user_by_token">
+        SELECT * FROM `user`
+        WHERE password_token = #{token}
+    </select>
+
+    <update id="resetting_password">
+        UPDATE user SET
+        `pw`=#{pw}
+        WHERE password_token=#{token}
+    </update>
 </mapper>
