@@ -42,13 +42,12 @@
         width: 25%;
     }
     .label{
-        left: 12.5%;
         font-size: 10px;
         color: #b7b7b7;
         display: block;
         position: relative;
-        margin-bottom: 5px;
-        text-align: left;
+        margin-bottom: 10px;
+        text-align: center;
     }
     .btn_box{
         display: flex;
@@ -91,11 +90,9 @@
             </div>
 
             <div class="inputBox">
-                <span class="label">
-                    아이디
-                </span>
                 <label for="id">
-                    <i>이미지 예정</i>
+                    <span class="label">아이디</span>
+                    <i class="fa-regular fa-user fa-2x"></i>
                 </label>
                 <input type="text" name="id" id="id" oninput="initInput()">
                 <button class="checkBtn" type="button" onclick="duplicateCheck()">
@@ -108,21 +105,17 @@
             </div>
 
             <div class="inputBox">
-                <span class="label">
-                    비밀번호
-                </span>
                 <label for="password">
-                    <i>이미지 예정</i>
+                    <span class="label">비밀번호</span>
+                    <i class="fa-solid fa-key fa-2x"></i>
                 </label>
                 <input type="password" name="pw" id="password" >
             </div>
 
             <div class="inputBox">
-                <span class="label">
-                    비밀번호
-                </span>
                 <label for="check">
-                    비밀번호 확인
+                    <span class="label">비밀번호</span>
+                    <i class="fa-solid fa-lock fa-2x"></i>
                 </label>
                 <input type="password" name="check" id="check" oninput="passwordCheck()">
             </div>
